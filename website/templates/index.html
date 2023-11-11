@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>QR Code Generator</h1>
+    <form action="/generate" method="post">
+        <label for="url">Enter the URL: </label>
+        <input type="text" name="url" required>
+        <br>
+        
+        <!-- Add these div elements to display selected colors dynamically -->
+        <div id="fill-color-preview" style="background-color: {{ fill_color }}; height: 20px; margin-bottom: 10px;"></div>
+        <div id="back-color-preview" style="background-color: {{ back_color }}; height: 20px; margin-bottom: 10px;"></div>
+        
+        <label for="fill">Fill Color: </label>
+        <input type="color" name="fill" id="fill-color" value="{{ fill_color }}" oninput="updateColorPreview('fill-color-preview', 'fill-color')">
+        <br>
+        
+        <label for="back">Background Color: </label>
+        <input type="color" name="back" id="back-color" value="{{ back_color }}" oninput="updateColorPreview('back-color-preview', 'back-color')">
+        <br>
+        
+        <button type="submit">Generate QR Code</button>
+    </form>
+
+
+
+    {% if qr_image %}
+        <img src="{{ url_for('static', filename=qr_image) }}" alt="Generated QR Code">
+    {% endif %}
+
+    <!-- JavaScript function for color preview -->
+    <script>
+        function updateColorPreview(previewId, inputId) {
+            var colorInput = document.getElementById(inputId).value;
+            var previewDiv = document.getElementById(previewId);
+            previewDiv.style.backgroundColor = colorInput;
+        }
+    </script>
+</body>
+</html>
